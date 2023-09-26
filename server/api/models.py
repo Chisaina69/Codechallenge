@@ -20,14 +20,14 @@ class Restaurant(db.Model,SerializerMixin):
     pizzas = db.relationship('Pizza', secondary='restaurant_pizzas', back_populates='restaurants')
 
    
-    # def __repr__(self):
-    #     return f'< Restaurant {self.name} | Address: {self.address}>'
+    def __repr__(self):
+        return f'< Restaurant {self.name} | Address: {self.address}>'
     
-    # @validates('name')
-    # def check_name(self,key,name):
-    #     if len(name) > 50:
-    #         raise AssertionError("Name must be less than 50 words in length.")
-    #     return name
+    @validates('name')
+    def check_name(self,key,name):
+        if len(name) > 50:
+            raise AssertionError("Name must be less than 50 words in length.")
+        return name
 
     
 class Pizza(db.Model,SerializerMixin):
@@ -63,21 +63,21 @@ class RestaurantPizza(db.Model,SerializerMixin):
     restaurant = db.relationship('Restaurant', back_populates='restaurant_pizzas', overlaps="restaurants")
 
 
-    # def __repr__(self):
-    #     return f'< Restaurant Pizza Price {self.price} | Created at: {self.created_at} | Updated at: {self.updated_at} >'
+    def __repr__(self):
+        return f'< Restaurant Pizza Price {self.price} | Created at: {self.created_at} | Updated at: {self.updated_at} >'
     
-    # @validates('price')
-    # def check_price(self, key, price):
-    #     if price >= 1 and price <= 30:
-    #         return price
-    #     else:
-    #         response_dict={
-    #             "errors": ["validation errors"]
-    #         }
-    #         response=make_response(
-    #             jsonify(response_dict),
-    #             403
-    #         )
-    #         return response
+    @validates('price')
+    def check_price(self, key, price):
+        if price >= 1 and price <= 30:
+            return price
+        else:
+            response_dict={
+                "errors": ["validation errors"]
+            }
+            response=make_response(
+                jsonify(response_dict),
+                403
+            )
+            return response
 
     
